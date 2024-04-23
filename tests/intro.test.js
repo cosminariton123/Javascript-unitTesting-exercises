@@ -1,5 +1,5 @@
 import { describe, test, it, expect } from "vitest";
-import { max } from "../src/intro";
+import { fizzBuzz, max } from "../src/intro";
 
 //it === test
 
@@ -27,5 +27,24 @@ describe("max", () => {
 
     test("should return the first argument if arguments are equal", () => {
         expect(max(2, 2)).toBe(2);
+    })
+})
+
+
+describe("fizzBuzz", () => {
+    test("should return FizzBuzz if arg divisible both by 3 and 5", () => {
+        expect(fizzBuzz(15)).toBe("FizzBuzz");
+    })
+    
+    test("should return Fizz if arg divisible only by 3", () => {
+        expect(fizzBuzz(6)).toBe("Fizz");
+    })
+
+    test("should return Buzz if arg divisible only by 5", () => {
+        expect(fizzBuzz(10)).toBe("Buzz");
+    })
+
+    test("should return the arg as a string if arg not divisible by 3 or 5", () => {
+        expect(fizzBuzz(7)).toBe("7");
     })
 })
