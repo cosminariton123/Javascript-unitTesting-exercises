@@ -1,5 +1,5 @@
 
-import { vi,  it, expect, describe } from 'vitest'
+import { vi,  it, expect, describe, beforeAll, beforeEach } from 'vitest'
 import { getPriceInCurrency, getShippingInfo, login, renderPage, signUp, submitOrder } from '../src/mocking';
 import { getExchangeRate } from '../src/libs/currency';
 import { getShippingQuote } from '../src/libs/shipping';
@@ -196,5 +196,45 @@ describe('login', () => {
 
         const securityCode = spy.mock.results[0].value.toString();
         expect(sendEmail).toHaveBeenLastCalledWith(email, securityCode);
+    })
+})
+
+//mockClear() -> just clears all information about the calls
+//mockReset() -> resets to empty implementation
+//mockRestore() ->restores to original implementation --> only makes sense with spies
+
+describe('signUp2', () => {
+    const validEmail = "name@domain.com"
+
+    beforeAll(() => {
+        vi.mocked(sendEmail).mockClear();
+        vi.clearAllMocks();
+    })
+
+    beforeEach(() => {
+        vi.mocked(sendEmail).mockClear();
+        vi.clearAllMocks(); //Or configure vitest to clearAllMocks so we don't have to
+    })
+
+    it("should return false if email is not valid", async () => {
+        const result = await signUp("a");
+
+        expect(result).toBe(false);
+    })
+
+    it("should return true if email is valid", async () => {
+        const result = await signUp(validEmail);
+
+        expect(result).toBe(true);
+    })
+
+    it("should send the welcome email if email is valid", async () => {
+        const result = await signUp(validEmail);
+
+        expect(sendEmail).toHaveBeenCalledOnce();
+        //expect(sendEmail).toHaveBeenCalledWith(validEmail, /welcomecici/i); doesn't work with regular exp
+        const args = vi.mocked(sendEmail).mock.calls[0]
+        expect(args[0]).toBe(validEmail);
+        expect(args[1]).toMatch(/welcome/i);
     })
 })
