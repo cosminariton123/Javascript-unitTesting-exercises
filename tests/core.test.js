@@ -1,4 +1,5 @@
 import { it, test, expect, describe } from "vitest"
+import { getCoupons } from "../src/core";
 
 
 describe("test suite", () => {
@@ -45,6 +46,36 @@ describe("test suite", () => {
         expect(result).toHaveProperty("name");
         expect(result).toHaveProperty("name", "Cosmin");
         expect(typeof result.name).toBe("string")
+    })
+})
+
+
+describe("coupon suite", () => {
+    it("should return an array", () => {
+        expect(Array.isArray(getCoupons())).toBe(true); //unnecessary in typescript
+    })
+
+    it("should return an array that is not empty", () => {
+        expect(getCoupons().length).toBeGreaterThan(0);
+    })
+
+    it("should return an array with valid coupons codes", () => {
+        const coupons = getCoupons();
+        coupons.forEach(coupon => {
+            expect(coupon).toHaveProperty("code");
+            expect(typeof coupon.code).toBe("string"); //unnecessary in typescript
+            expect(coupon.code).toBeTruthy(); //Not empty string
+        })
+    })
+
+    it("should return an array with valid discounts", () => {
+        const coupons = getCoupons();
+        coupons.forEach(coupon => {
+            expect(coupon).toHaveProperty("discount");
+            expect(typeof coupon.discount).toBe("number");
+            expect(coupon.discount).toBeGreaterThan(0);
+            expect(coupon.discount).toBeLessThan(1);
+        })
     })
 })
 
