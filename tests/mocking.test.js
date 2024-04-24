@@ -1,6 +1,6 @@
 
 import { vi,  it, expect, describe, beforeAll, beforeEach } from 'vitest'
-import { getPriceInCurrency, getShippingInfo, isOnline, login, renderPage, signUp, submitOrder } from '../src/mocking';
+import { getDiscount, getPriceInCurrency, getShippingInfo, isOnline, login, renderPage, signUp, submitOrder } from '../src/mocking';
 import { getExchangeRate } from '../src/libs/currency';
 import { getShippingQuote } from '../src/libs/shipping';
 import { trackPageView } from '../src/libs/analytics';
@@ -254,5 +254,23 @@ describe('isOnline', () => {
 
         vi.setSystemTime("2024-01-01 19:59");
         expect(isOnline()).toBe(true);
+    })
+})
+
+describe('getDiscount', () => {
+    it("should retun 0.2 on Christmas day", () => {
+        vi.setSystemTime("2024-12-25 00:01");
+        expect(getDiscount()).toBe(.2);
+
+        vi.setSystemTime("2024-12-25 23:59");
+        expect(getDiscount()).toBe(.2);
+    })
+
+    it("should retun 0 on any other day", () => {
+        vi.setSystemTime("2024-12-24 00:01");
+        expect(getDiscount()).toBe(0);
+
+        vi.setSystemTime("2024-12-26 00:01");
+        expect(getDiscount()).toBe(0);
     })
 })
