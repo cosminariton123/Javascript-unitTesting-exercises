@@ -1,5 +1,5 @@
 import { it, test, expect, describe } from "vitest"
-import { getCoupons } from "../src/core";
+import { calculateDiscount, getCoupons } from "../src/core";
 
 
 describe("test suite", () => {
@@ -77,6 +77,32 @@ describe("coupon suite", () => {
             expect(coupon.discount).toBeLessThan(1);
         })
     })
+})
+
+
+describe('calculateDiscount', () => {
+    it("should return discounted price if given valid code", () => {
+        expect(calculateDiscount(10, "SAVE10")).toBe(9);
+        expect(calculateDiscount(10, "SAVE20")).toBe(8);
+    })
+
+    it("should handle non-numeric price", () => {
+        expect(calculateDiscount("10", "SAVE10")).toMatch(/invalid/i)
+    })
+
+    it("should handle negative price", () => {
+        expect(calculateDiscount(-10, "SAVE10")).toMatch(/invalid/i)
+    })
+
+    it("should handle non-string discount code", () => {
+        expect(calculateDiscount(10, 10)).toMatch(/invalid/i)
+    })
+
+    it("should handle invalid discount code", () => {
+        expect(calculateDiscount(10, "INVALID")).toBe(10);
+    })
+
+
 })
 
 
