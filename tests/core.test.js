@@ -1,5 +1,5 @@
 import { it, test, expect, describe } from "vitest"
-import { calculateDiscount, canDrive, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
+import { calculateDiscount, canDrive, fetchData, getCoupons, isPriceInRange, isValidUsername, validateUserInput } from "../src/core";
 
 
 describe("test suite", () => {
@@ -241,5 +241,38 @@ describe("isPriceInRangeWithParameterizedTests", () => {
         { scenario: "price > max", price: 200, result: false},
     ])("should return $result when $scenario", ({ price, result }) => {
         expect(isPriceInRange(price, 0, 100)).toBe(result);
+    })
+})
+
+describe('fetchData', () => {
+    it("should return a promise that will resolve to an array of numbers", () => {
+        fetchData().then((result) => {
+            expect(Array.isArray(result)).toBe(true);
+            expect(result.length).toBeGreaterThan(0);
+        });
+    })
+
+    it("should return a promise that will resolve to an array of numbers async variant", async () => {
+        const result = await fetchData();
+        expect(Array.isArray(result)).toBe(true);
+        expect(result.length).toBeGreaterThan(0);
+    })
+
+    it("should return a promise that will resolve to an array of numbers with try catch on rejection", () => {
+        fetchData().then((result) => {
+        }).catch((error) => {
+            expect(error).toHaveProperty("reason");
+            expect(error.reason).toMatch(/fail/i)
+        });
+    })
+
+    it("should return a promise that will resolve to an array of numbers async variant with try catch on rejection", async () => {
+        try{
+            const result = await fetchData();
+        } catch (error) {
+            expect(error).toHaveProperty("reason");
+            expect(error.reason).toMatch(/fail/i)
+        }
+        
     })
 })
