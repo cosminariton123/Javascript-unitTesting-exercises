@@ -50,3 +50,15 @@ describe('test suite', () => {
         expect(greet).toHaveBeenCalledOnce();
     })
 })
+
+describe('test suite Exercise: Working with Mock Functions', () => {
+    it("test case", () => {
+        const sendText = vi.fn();
+        sendText.mockReturnValue("ok");
+
+        const result = sendText("message");
+
+        expect(sendText).toHaveBeenCalledWith("message");
+        expect(result).toBe("ok");
+    })
+})
