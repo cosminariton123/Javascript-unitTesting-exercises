@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "format": "prettier . --write",
+    "lint": "eslint . --fix"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^1.5.0",
